@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/PTC/Documents/NetBeansProjects/Coffee/src/coffee/LoginPage.java</file>
+            <file>file:/C:/Users/PTC/Documents/NetBeansProjects/Coffee/src/coffee/SignUpPage.java</file>
+            <file>file:/C:/Users/PTC/Documents/NetBeansProjects/Coffee/src/model/Dao.java</file>
+            <file>file:/C:/Users/PTC/Documents/NetBeansProjects/Coffee/src/coffee/Homepage.java</file>
+            <file>file:/C:/Users/PTC/Documents/NetBeansProjects/Coffee/src/model/Admin.java</file>
+            <file>file:/C:/Users/PTC/Documents/NetBeansProjects/Coffee/src/coffee/CartPage.java</file>
+            <file>file:/C:/Users/PTC/Documents/NetBeansProjects/Coffee/src/model/AdminDao.java</file>
+        </group>
     </open-files>
 </project-private>

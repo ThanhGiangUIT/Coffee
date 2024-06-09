@@ -290,23 +290,29 @@ public class SignUpPage extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (isEmpty()) {
             String username = jTextField3.getText().trim();
-            if (!dao.isAdminNameExist(username)) {
-                Admin admin = new Admin();
-                admin.setId(dao.getMaxRowAdminTable());
-                admin.setUsername(username);
-                admin.setPassword(String.valueOf(jPasswordField1.getPassword()));
-                admin.setsQues(jComboBox1.getSelectedItem().toString());
-                admin.setAns(jTextField6.getText().trim());
 
-                if (dao.insert(admin)) {
-                    JOptionPane.showMessageDialog(this, "Tài khoản Admin đã được tạo thành công!");
-                    new LoginPage().setVisible(true);
-                    setVisible(false);
-                } else {
-                    JOptionPane.showMessageDialog(this, "Không thể tạo tài khoản Admin!", "Warning", 2);
-                }
-            }else{
-                JOptionPane.showMessageDialog(this, "Tên admin đã tồn tại!", "Warning", 2);
+            if (dao.isAdminNameExist(username)) {
+                JOptionPane.showMessageDialog(this, "Tên tài khoản đã tồn tại, vui lòng chọn tên khác!", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            Admin admin = new Admin();
+            admin.setId(dao.getMaxRowAdminTable());
+            admin.setUsername(username);
+            admin.setPassword(String.valueOf(jPasswordField1.getPassword()));
+            admin.setsQues(jComboBox1.getSelectedItem().toString());
+            admin.setAns(jTextField6.getText().trim());
+
+            // Lấy vai trò từ cơ sở dữ liệu
+            String role = dao.getRole(username);
+            admin.setRole(role);
+
+            if (dao.insert(admin)) {
+                JOptionPane.showMessageDialog(this, "Tài khoản đã được tạo thành công!");
+                new LoginPage().setVisible(true);
+                setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Không thể tạo tài khoản!", "Warning", 2);
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -336,8 +342,8 @@ public class SignUpPage extends javax.swing.JFrame {
         }
         return true;
     }
-    
-   /**
+
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -371,7 +377,7 @@ public class SignUpPage extends javax.swing.JFrame {
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

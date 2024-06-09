@@ -261,16 +261,26 @@ public class LoginPage extends javax.swing.JFrame {
         if (isEmpty()) {
             String username = jTextField4.getText().trim();
             String password = String.valueOf(jPasswordField1.getPassword());
+
             if (dao.getMaxRowAdminTable() != 1) {
+                String role = dao.getRole(username); // Lấy vai trò của người dùng từ database
+
                 if (dao.login(username, password)) {
-                    JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
-                    new Homepage().setVisible(true);
-                    setVisible(false);
+                    if ("admin".equals(role)) { // Kiểm tra xem người dùng có phải là admin hay không
+                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công với tư cách là Admin!");
+                        new Homepage().setVisible(true);
+                        setVisible(false);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Đăng nhập thành công với tư cách là User!");
+                        new Homepage().setVisible(true);
+                        setVisible(false);
+                        // Thêm xử lý tương ứng cho vai trò User (nếu cần)
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(this, "Tên tài khoản hoặc mật khẩu sai!", "Đăng nhập thất bại", 2);
+                    JOptionPane.showMessageDialog(this, "Tên tài khoản hoặc mật khẩu sai!", "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
                 }
-            }else{
-                JOptionPane.showMessageDialog(this, "Tên tài khoản chưa được đăng ký !\nBạn cần đăng ký tài khoản trước !", "Đăng nhập thất bại", 2);
+            } else {
+                JOptionPane.showMessageDialog(this, "Tên tài khoản chưa được đăng ký!\nBạn cần đăng ký tài khoản trước!", "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
                 new SignUpPage().setVisible(true);
                 setVisible(false);
             }
@@ -287,7 +297,7 @@ public class LoginPage extends javax.swing.JFrame {
         }
         return true;
     }
-    
+
     /**
      * @param args the command line arguments
      */

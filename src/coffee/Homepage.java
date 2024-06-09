@@ -17,11 +17,14 @@ public class Homepage extends javax.swing.JFrame {
     /**
      * Creates new form Homepage
      */
+
     public Homepage() {
         initComponents();
         setDateTime();
+        
     }
-
+    
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -176,11 +179,11 @@ public class Homepage extends javax.swing.JFrame {
         new StatisticsPage().setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 
-    private void setDateTime(){
+    private void setDateTime() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true){
+                while (true) {
                     try {
                         Thread.sleep(1000);
                     } catch (Exception ex) {
@@ -197,8 +200,8 @@ public class Homepage extends javax.swing.JFrame {
             }
         }).start();
     }
-    
-   /**
+
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
