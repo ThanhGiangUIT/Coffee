@@ -14,6 +14,8 @@ public class Admin {
     private String password;
     private String sQues;
     private String ans;
+    private String role;
+    
 
     public int getId() {
         return id;
@@ -53,5 +55,13 @@ public class Admin {
 
     public void setAns(String ans) {
         this.ans = ans;
+    }
+    
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

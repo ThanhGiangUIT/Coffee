@@ -131,4 +131,114 @@ public class AdminDao {
             return false;
         }
     }
+        public String getRole(String username) {
+        String role = "user"; // Mặc định, giả định người dùng không phải là admin
+
+        try {
+            String sql = "SELECT * FROM admin WHERE username = ?";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+
+            // Biến boolean để kiểm tra xem có tài khoản "admin" không
+            boolean isAdmin = false;
+
+            if (rs.next()) {
+                isAdmin = true; // Đặt biến isAdmin thành true nếu có tài khoản "admin"
+            }
+
+            if (isAdmin && "admin".equals(username)) {
+                role = "admin"; // Nếu tên tài khoản là "admin" và có tài khoản "admin" tồn tại, thì gán vai trò là admin
+
+                // Cập nhật vai trò trong cơ sở dữ liệu
+                String updateSql = "UPDATE admin SET role = ? WHERE username = ?";
+                PreparedStatement updatePs = con.prepareStatement(updateSql);
+                updatePs.setString(1, role);
+                updatePs.setString(2, username);
+                updatePs.executeUpdate();
+                updatePs.close();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return role;
+    }
+
+    public String checkUserRole(String username) {
+        String role = " "; // Mặc định, giả định người dùng không phải là admin
+
+        try {
+            String sql = "SELECT role FROM admin WHERE username = ?";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, username);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String userRole = rs.getString("role");
+                if ("admin".equals(userRole)) {
+                    role = "admin";
+                } else {
+                    role = "user";
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return role;
+    }
+
+    public String getUsername(int id) {
+        String username = " ";
+
+        try {
+            String sql = "SELECT username FROM admin WHERE id = ?";
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                username = rs.getString("username");
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+            } catch (Exception ex) {
+                Logger.getLogger(AdminDao.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return username;
+    }
 }
