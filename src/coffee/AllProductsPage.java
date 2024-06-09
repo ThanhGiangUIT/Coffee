@@ -96,7 +96,7 @@ public class AllProductsPage extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "TênSP", "Gía Tiền", "Hình ảnh"
+                "ID", "TênSP", "Gía Tiền", "Hình ảnh", "Số lượng"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

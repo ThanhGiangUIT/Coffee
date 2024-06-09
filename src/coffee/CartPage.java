@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import model.Calculate;
+import model.Cart;
 import model.Dao;
 import model.Payment;
 
@@ -32,7 +33,7 @@ public class CartPage extends javax.swing.JFrame {
     DefaultTableModel model;
     private double total = 0.0;
     LocalDate currenDate = LocalDate.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-dd");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     Calculate calculate = new Calculate();
 
     public CartPage() {
@@ -382,6 +383,7 @@ public class CartPage extends javax.swing.JFrame {
             if (dao.insertPayment(payment)) {
                 JOptionPane.showMessageDialog(this, "Thanh toán thành công !!");
                 int cid = Integer.parseInt(model.getValueAt(rowIndex, 0).toString());
+                dao.recalculateQuantityFromProduct(cid);
                 dao.deleteCart(cid);
 
                 int x = JOptionPane.showConfirmDialog(this, "Bạn có muốn in biên lai không ?", "Print", JOptionPane.YES_NO_OPTION, 0);

@@ -121,9 +121,17 @@ public class OrderPage extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Mã SP", "TênSP", "Gía Tiền", "Hình ảnh"
+                "Mã SP", "TênSP", "Gía Tiền", "Hình ảnh", "Tồn kho"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -292,8 +300,25 @@ public class OrderPage extends javax.swing.JFrame {
                 int proId = Integer.parseInt(model.getValueAt(rowIndex, 0).toString());
                 String pName = jTextField1.getText().trim();
                 price = Double.parseDouble(model.getValueAt(rowIndex, 2).toString());
+                int stockQuantity = dao.getProductQuantity(proId);
+                int currentCartQty = dao.getCartQuantity(cid);
+
                 
-                if (!dao.isProductExist(cid, proId)) {
+                if (dao.isProductExist(cid, proId)) { // Nếu sản phẩm đã tồn tại trong cart
+                    int newQty = currentCartQty + qty;
+                    Cart cart = new Cart();
+                    if (newQty > stockQuantity) {
+                        JOptionPane.showMessageDialog(this, "Không đủ số lượng hàng. Vui lòng chọn sản phẩm khác!", "Warning", 2);
+                    } else if (dao.insertCart(cart)) {
+                        total += price * (double) qty;
+                        jLabel1.setText(String.format("Total ($): %.2f", total));
+                        dao.updateCartQuantity(cid, newQty, proId, total);
+                        JOptionPane.showMessageDialog(this, "Thêm sản phẩm trước đó thành công!");
+                        clear();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Không thể cập nhật số lượng sản phẩm trong giỏ hàng.", "Warning", 2);
+                        }
+                } else if (!dao.isProductExist(cid, proId)) { //Nếu sản phẩm chưa tồn tại trong cart
                     Cart cart = new Cart();
                     cart.setId(cid);
                     cart.setPid(proId);
@@ -303,15 +328,16 @@ public class OrderPage extends javax.swing.JFrame {
                     cart.setTotal(price * (double) qty);
                     total += price * (double) qty;
                     
-                    jLabel1.setText(String.format("Total ($): " + "%.2f", total));
-                    if (dao.insertCart(cart)) {
+                    if (qty > stockQuantity) {
+                        JOptionPane.showMessageDialog(this, "Không đủ số lượng hàng. Vui lòng chọn sản phẩm khác!", "Warning", 2);
+                    } else if (dao.insertCart(cart)) {
+                        jLabel1.setText(String.format("Total ($): " + "%.2f", total));
                         JOptionPane.showMessageDialog(this, "Sản phẩm này đã được thêm !");
-                        clear();
-                    }
+                      clear();
+                    }  
                 } else {
-                    JOptionPane.showMessageDialog(this, "Sản phẩm này đã tồn tại !", "Warning", 2);
+                    JOptionPane.showMessageDialog(this, "Không thể thêm sản phẩm này!", "Warning", 2);
                 }
-                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "" + e, "Warning", 2);
             }

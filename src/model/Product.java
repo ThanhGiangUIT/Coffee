@@ -13,6 +13,7 @@ public class Product {
     private String name;
     private double price;
     private byte []image;
+    private int qty;
 
     public int getId() {
         return id;
@@ -46,4 +47,12 @@ public class Product {
         this.image = image;
     }
     
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
 }
